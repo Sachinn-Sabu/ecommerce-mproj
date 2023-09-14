@@ -1,0 +1,45 @@
+{% extends 'base.html' %}
+
+{% load static %}
+
+{% block metadescription %}
+    {% if product %}
+        {{ product.desc | truncatewords:155 }}
+    {% else %}
+        Welcome to ABC Store
+    {% endif %}
+{% endblock %}
+
+{% block title %}
+    {% if product %}
+        {{ product.title }} - ABC Store
+    {% else %}
+        ABC Store - Buy Various Items
+    {% endif %}
+{% endblock %}
+
+{% block content %}
+    <div class="container mt-5">
+        <div class="row">
+            {% if product %}
+                <div class="col-lg-6">
+                    <img src="{{ product.img.url }}" alt="{{ product.name }}" class="img-fluid">
+                </div>
+                <div class="col-lg-6">
+                    <p class="text-muted">{{ product.category }}</p>
+                    <h2 class="my-4">{{ product.name }}</h2>
+                    <p class="h4">Price: Rs.{{ product.price }}</p>
+                    <p class="h5 my-4">Product Description:</p>
+                    <p>{{ product.desc }}</p>
+                    {% if product.stock <= 0 %}
+                        <p class="text-danger">Out of Stock</p>
+                    {% else %}
+                        <a class="btn btn-primary btn-block my_custom_button" href="{% url 'cart:addcart' product.id %}">
+                             Add to Cart
+                        </a>
+                    {% endif %}
+                </div>
+            {% endif %}
+        </div>
+    </div>
+{% endblock %}
